@@ -1,0 +1,220 @@
+/* =========================================================================
+   PASSAPU — Tampilan HP / Android (tambahan)
+   Berkas ini hanya MENAMBAHKAN gaya untuk layar ponsel (dimuat setelah
+   css/style.css). Tampilan desktop tetap sepenuhnya memakai style.css.
+   ========================================================================= */
+
+/* Elemen khusus HP tidak tampil di desktop */
+.m-appbar,
+.m-bar { display: none; }
+
+/* Ponsel tegak (≤ 760 px) dan ponsel mendatar (tinggi ≤ 500 px, layar sentuh) */
+@media (max-width: 760px), (max-height: 500px) and (pointer: coarse) {
+  :root {
+    --m-appbar: 60px;
+    --m-bar: 68px;
+    --m-gap: 16px;
+    --fab: 60px;
+    --item: 54px;
+    --arc: 112px;
+  }
+
+  /* ---------- Sembunyikan tampilan bergaya desktop ---------- */
+  .topbar,
+  .hero__brand,
+  .window__bar,
+  .dock__status { display: none; }
+
+  /* ---------- Bilah aplikasi atas ---------- */
+  .m-appbar {
+    position: sticky;
+    top: 0;
+    z-index: 25;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    height: var(--m-appbar);
+    padding: 0 var(--m-gap);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(8, 25, 42, 0.86);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+  }
+  .logo--m { --logo: 36px; --logo-ring: 2px; }
+  .m-appbar__text { display: flex; flex-direction: column; min-width: 0; line-height: 1.2; }
+  .m-appbar__name { font-size: 18px; font-weight: 700; letter-spacing: 0.03em; }
+  .m-appbar__section {
+    overflow: hidden;
+    font-size: 12.5px;
+    font-weight: 500;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    color: var(--lime);
+  }
+
+  /* ---------- Konten penuh selebar layar ---------- */
+  .hero { padding: 14px var(--m-gap) 0; }
+  .hero__lead { margin: 0; font-size: 13.5px; line-height: 1.55; }
+
+  .window {
+    width: 100%;
+    margin: 0;
+    border: 0;
+    border-radius: 0;
+    background: none;
+    box-shadow: none;
+  }
+  .window__body { display: block; min-height: 0; border-radius: 0; }
+  .dock { height: 0; border: 0; background: none; }
+  .stage { padding: 18px var(--m-gap) 28px; }
+
+  .view__title { font-size: 24px; }
+  .view__subtitle { font-size: 14px; }
+  .card { padding: 16px; border-radius: 14px; }
+  .translator { padding: 0; }
+
+  /* Lingkaran dekoratif besar mengganggu di layar kecil */
+  .bg__ring--3 { display: none; }
+
+  .scene { height: 118px; border-radius: 14px; }
+  .scene__sun { top: 14px; width: 48px; height: 48px; }
+  .scene__content { gap: 6px; padding: 12px; }
+  .scene__chip { padding: 5px 10px; font-size: 12px; }
+  .scene__chip b { font-size: 13px; }
+
+  /* Baris yang bisa digeser ke samping (khas aplikasi ponsel) */
+  .examples,
+  .kamus .chips,
+  .map-card__tabs,
+  .facts {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x proximity;
+    scrollbar-width: none;
+  }
+  .examples::-webkit-scrollbar,
+  .kamus .chips::-webkit-scrollbar,
+  .map-card__tabs::-webkit-scrollbar,
+  .facts::-webkit-scrollbar { display: none; }
+  .examples > *,
+  .kamus .chips > *,
+  .map-card__tabs > * { flex: none; scroll-snap-align: start; }
+
+  /* ---------- Penerjemah ---------- */
+  .translator__bar { padding: 12px 14px; }
+  .lang-switch { width: 100%; }
+  .lang-pill { flex: 1; min-width: 0; }
+  .pane { padding: 14px; }
+  textarea, .output { min-height: 96px; font-size: 18px; }
+  .translator__actions { padding: 12px 14px 14px; }
+  .examples { flex: 1 1 100%; min-width: 0; margin: 0 -14px; padding: 2px 14px 6px; }
+  .translator__actions .btn--primary { width: 100%; padding: 14px 20px; font-size: 15px; }
+
+  .stats { gap: 10px; }
+  .stat { padding: 12px 14px; }
+  .stat__value { font-size: 21px; }
+
+  .history { scroll-margin-top: calc(var(--m-appbar) + 12px); }
+
+  /* ---------- Bahasa & kamus ---------- */
+  .facts { display: flex; gap: 12px; margin-right: calc(var(--m-gap) * -1); margin-left: calc(var(--m-gap) * -1); padding: 2px var(--m-gap) 8px; scroll-snap-type: x mandatory; }
+  .fact { flex: 0 0 82%; scroll-snap-align: center; }
+  .search input { font-size: 16px; }
+  .kamus .chips { margin: 0 -16px 14px; padding: 2px 16px 6px; }
+  .kamus__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+  .entry { padding: 10px 12px; }
+  .entry__go { opacity: 1; }
+
+  /* ---------- Lokasi ---------- */
+  .map-card__tabs { padding: 6px 6px 10px; }
+  .map-frame { height: min(58vh, 340px); }
+
+  /* ---------- Bilah bawah dengan tombol radial di tengah ---------- */
+  .m-bar {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 28;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) calc(var(--fab) + 34px) minmax(0, 1fr);
+    align-items: center;
+    height: calc(var(--m-bar) + env(safe-area-inset-bottom, 0px));
+    padding: 0 8px env(safe-area-inset-bottom, 0px);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(8, 25, 42, 0.94);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+    /* lekukan setengah lingkaran tempat tombol radial "duduk" */
+    -webkit-mask: radial-gradient(circle at 50% 0, transparent calc(var(--fab) / 2 + 8px), #000 calc(var(--fab) / 2 + 9px));
+    mask: radial-gradient(circle at 50% 0, transparent calc(var(--fab) / 2 + 8px), #000 calc(var(--fab) / 2 + 9px));
+  }
+  .m-bar__btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+    height: 52px;
+    padding: 0 12px;
+    border: 0;
+    border-radius: 16px;
+    text-align: left;
+    color: var(--text);
+    background: transparent;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .m-bar__btn:active { background: rgba(219, 255, 0, 0.12); }
+  .m-bar__btn--end { flex-direction: row-reverse; justify-self: end; text-align: right; }
+  .m-bar__btn .icon { width: 22px; height: 22px; color: var(--lime); }
+  .m-bar__text { display: flex; flex-direction: column; min-width: 0; line-height: 1.2; }
+  .m-bar__text small { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--faint); }
+  .m-bar__text b { overflow: hidden; font-size: 14px; white-space: nowrap; text-overflow: ellipsis; }
+
+  /* Tombol radial berpindah ke tengah bilah bawah */
+  .dock__inner {
+    position: fixed;
+    top: auto;
+    bottom: calc(var(--m-bar) - var(--fab) / 2 + env(safe-area-inset-bottom, 0px));
+    left: calc(50% - var(--fab) / 2);
+    gap: 0;
+    padding: 0;
+  }
+
+  /* Menu radial membuka setengah lingkaran ke atas */
+  .radial__slot:nth-child(1) { --a: -150deg; }
+  .radial__slot:nth-child(2) { --a: -90deg; }
+  .radial__slot:nth-child(3) { --a: -30deg; }
+  .radial__slot:nth-child(n) .radial__label {
+    top: auto;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    align-items: center;
+    text-align: center;
+    transform: translate(-50%, 6px);
+  }
+  .radial.is-open .radial__slot:nth-child(n) .radial__label { transform: translate(-50%, 0); }
+
+  .radial__hint { top: auto; bottom: calc(100% + 18px); left: 50%; transform: translateX(-50%); animation-name: nudge; }
+  .radial__hint::after { top: auto; bottom: -5px; left: 50%; transform: translateX(-50%) rotate(45deg); }
+
+  /* Ruang bawah agar konten tidak tertutup bilah bawah */
+  .foot {
+    width: auto;
+    padding: 20px var(--m-gap) calc(var(--m-bar) + 48px + env(safe-area-inset-bottom, 0px));
+  }
+  .toast { bottom: calc(var(--m-bar) + 48px + env(safe-area-inset-bottom, 0px)); }
+}
+
+/* Layar sangat sempit: label menu radial dibuat ringkas */
+@media (max-width: 349px) {
+  .radial__label small { display: none; }
+}
+
+/* Ponsel mendatar: bilah lebih tipis dan menu radial lebih kecil */
+@media (max-height: 500px) and (pointer: coarse) {
+  :root { --m-appbar: 50px; --m-bar: 56px; --fab: 52px; --item: 46px; --arc: 136px; }
+  .hero { display: none; }
+  .m-appbar__name { font-size: 16px; }
+}

@@ -1,0 +1,363 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PASSAPU — Penerjemah Bahasa Konjo ke Indonesia</title>
+  <meta name="description" content="PASSAPU: website penerjemah bahasa Konjo dialek Kajang ke bahasa Indonesia dengan algoritma Longest Match, Kecamatan Kajang, Kabupaten Bulukumba.">
+  <meta name="theme-color" content="#102c40">
+  <link rel="icon" href="assets/favicon.png" type="image/png">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;500;700&family=Ubuntu+Mono:wght@400;700&display=swap">
+  <link rel="stylesheet" href="css/style.css">
+  <!-- Tambahan: tampilan khusus HP/Android -->
+  <link rel="stylesheet" href="css/mobile.css">
+</head>
+<body>
+  <svg class="sprite" aria-hidden="true" focusable="false">
+    <symbol id="i-translate" viewBox="0 0 24 24"><path d="M3 5h10M8 3v2M11 5c-1 4-3.6 7-7.2 8.6M5.8 8.6c1.2 2 3 3.6 5.2 4.6M13 21l4-9 4 9M14.4 18h5.2"/></symbol>
+    <symbol id="i-book" viewBox="0 0 24 24"><path d="M12 6.5C10 5 7 4.4 3.5 5v13c3.5-.6 6.5 0 8.5 1.5 2-1.5 5-2.1 8.5-1.5V5C17 4.4 14 5 12 6.5zM12 6.5v13"/></symbol>
+    <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21.5s-7-6.1-7-11.6a7 7 0 0 1 14 0c0 5.5-7 11.6-7 11.6z"/><circle cx="12" cy="9.8" r="2.6"/></symbol>
+    <symbol id="i-swap" viewBox="0 0 24 24"><path d="M4 8h15l-4-4M20 16H5l4 4"/></symbol>
+    <symbol id="i-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="11" height="11" rx="2.5"/><path d="M5 15V6.5A2.5 2.5 0 0 1 7.5 4H15"/></symbol>
+    <symbol id="i-trash" viewBox="0 0 24 24"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+    <symbol id="i-external" viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.2 2"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.6-3.6"/></symbol>
+    <symbol id="i-redo" viewBox="0 0 24 24"><path d="M20 7v5h-5"/><path d="M19.3 12A8 8 0 1 1 17 6.3L20 9"/></symbol>
+    <symbol id="i-wifi" viewBox="0 0 24 24"><path d="M2 8.8a15 15 0 0 1 20 0M5.2 12.3a10.3 10.3 0 0 1 13.6 0M8.6 15.8a5.4 5.4 0 0 1 6.8 0"/><circle cx="12" cy="19.2" r="1.2"/></symbol>
+    <symbol id="i-volume" viewBox="0 0 24 24"><path d="M4 9.5h3.8L13 5v14l-5.2-4.5H4zM16.5 9a4.3 4.3 0 0 1 0 6M19 6.5a8 8 0 0 1 0 11"/></symbol>
+  </svg>
+
+  <div class="bg" aria-hidden="true">
+    <span class="bg__ring bg__ring--1"></span>
+    <span class="bg__ring bg__ring--2"></span>
+    <span class="bg__ring bg__ring--3"></span>
+    <span class="bg__dots"></span>
+  </div>
+
+  <header class="topbar">
+    <div class="topbar__left"><button class="topbar__activities" id="activitiesBtn" type="button" aria-label="Buka menu radial"><i></i>Activities</button></div>
+    <div class="topbar__center"><span class="logo logo--mini"><img class="logo__img" src="assets/logo.png" alt="" width="22" height="22"></span>passapu</div>
+    <div class="topbar__right" aria-hidden="true">
+      <svg class="icon"><use href="#i-wifi"/></svg>
+      <svg class="icon"><use href="#i-volume"/></svg>
+      <span class="battery"><i></i></span>
+      <time class="topbar__clock" id="clock">--:--</time>
+    </div>
+  </header>
+
+  <!-- Tambahan HP/Android: bilah aplikasi atas (tersembunyi di desktop) -->
+  <header class="m-appbar">
+    <span class="logo logo--m"><img class="logo__img" src="assets/logo.png" alt="" width="36" height="36"></span>
+    <div class="m-appbar__text">
+      <strong class="m-appbar__name">PASSAPU</strong>
+      <span class="m-appbar__section" id="mSection">Terjemah Bahasa</span>
+    </div>
+  </header>
+
+  <main class="page">
+    <section class="hero">
+      <div class="hero__brand">
+        <span class="logo logo--hero"><img class="logo__img" src="assets/logo.png" alt="Logo PASSAPU" width="104" height="104"></span>
+        <h1 class="hero__title">PASSAPU</h1>
+      </div>
+      <p class="hero__lead">Website penerjemah <strong>bahasa Konjo</strong> dialek Kajang ke <strong>bahasa Indonesia</strong> dengan algoritma <strong>Longest Match</strong> — Kecamatan Kajang, Kabupaten Bulukumba.</p>
+    </section>
+
+    <div class="window" id="appWindow">
+      <div class="window__bar">
+        <span class="window__url"><span id="urlHost">passapu.vercel.app</span>/#<span id="urlPath">terjemah</span></span>
+        <span class="window__dots" aria-hidden="true"><i></i><i></i><i></i></span>
+      </div>
+
+      <div class="window__body">
+        <aside class="dock" aria-label="Navigasi utama">
+          <div class="dock__inner">
+            <nav class="radial" id="radial">
+              <div class="radial__disc" aria-hidden="true">
+                <span class="radial__ring radial__ring--1"></span>
+                <span class="radial__ring radial__ring--2"></span>
+                <span class="radial__ring radial__ring--3"></span>
+              </div>
+              <ul class="radial__menu" id="radialMenu">
+                <li class="radial__slot" style="--i:0">
+                  <a class="radial__item" href="#terjemah" data-view="terjemah" tabindex="-1">
+                    <svg class="icon"><use href="#i-translate"/></svg>
+                    <span class="radial__label"><b>Terjemah</b><small>Konjo → Indonesia</small></span>
+                  </a>
+                </li>
+                <li class="radial__slot" style="--i:1">
+                  <a class="radial__item" href="#bahasa" data-view="bahasa" tabindex="-1">
+                    <svg class="icon"><use href="#i-book"/></svg>
+                    <span class="radial__label"><b>Bahasa</b><small>Kamus &amp; dialek</small></span>
+                  </a>
+                </li>
+                <li class="radial__slot" style="--i:2">
+                  <a class="radial__item" href="#lokasi" data-view="lokasi" tabindex="-1">
+                    <svg class="icon"><use href="#i-pin"/></svg>
+                    <span class="radial__label"><b>Lokasi</b><small>Kecamatan Kajang</small></span>
+                  </a>
+                </li>
+              </ul>
+              <button class="fab" id="fab" type="button" aria-expanded="false" aria-controls="radialMenu" aria-label="Buka menu radial">
+                <span class="fab__icon" aria-hidden="true"><i></i><i></i><i></i></span>
+              </button>
+              <p class="radial__hint" id="radialHint">Klik untuk membuka menu</p>
+            </nav>
+            <div class="dock__status">
+              <span class="dock__caption">menu · tekan M</span>
+              <strong class="dock__label" id="dockLabel">Terjemah</strong>
+              <span class="dock__pips" aria-hidden="true"><i data-view="terjemah"></i><i data-view="bahasa"></i><i data-view="lokasi"></i></span>
+            </div>
+          </div>
+        </aside>
+
+        <div class="stage" id="stage">
+          <!-- ================= TERJEMAH ================= -->
+          <section class="view" id="view-terjemah" data-view="terjemah" aria-labelledby="judul-terjemah">
+            <header class="view__head">
+              <h2 class="view__title" id="judul-terjemah">Terjemah Bahasa</h2>
+              <p class="view__subtitle">Ketik kata atau kalimat bahasa Konjo. Sistem mencocokkan rangkaian kata terpanjang lebih dulu, lalu menurunkan panjangnya hingga satu kata.</p>
+            </header>
+
+            <figure class="scene">
+              <div class="scene__sun" aria-hidden="true"></div>
+              <svg class="scene__hills" viewBox="0 0 600 160" preserveAspectRatio="none" aria-hidden="true">
+                <path class="scene__hill scene__hill--back" d="M0 160V96l70-46 64 52 88-74 92 70 70-40 92 60 60-30 64 34v38z"/>
+                <path class="scene__hill scene__hill--front" d="M0 160v-34l90-36 80 46 110-62 90 56 80-30 150 48v12z"/>
+              </svg>
+              <figcaption class="scene__content">
+                <span class="scene__chip"><b id="statKata">82</b> kata</span>
+                <span class="scene__chip"><b id="statKategori">6</b> kategori</span>
+                <span class="scene__chip"><b id="statFrasa">6</b> frasa</span>
+                <span class="scene__chip scene__chip--accent">n maks = <b id="statNmax">2</b></span>
+              </figcaption>
+            </figure>
+            <p class="view__caption">Kata yang belum tersedia di kamus ditandai <span class="text-miss">merah</span> dengan keterangan “tidak ditemukan”.</p>
+
+            <div class="card translator">
+              <div class="translator__bar">
+                <div class="lang-switch" role="group" aria-label="Arah terjemahan">
+                  <span class="lang-pill" id="langFrom">Konjo <small>Kajang</small></span>
+                  <button class="swap" id="swapBtn" type="button" aria-label="Tukar arah terjemahan" title="Tukar arah terjemahan">
+                    <svg class="icon"><use href="#i-swap"/></svg>
+                  </button>
+                  <span class="lang-pill" id="langTo">Indonesia</span>
+                </div>
+                <span class="translator__hint">Hasil tampil saat mengetik · tekan <kbd>Ctrl</kbd> + <kbd>Enter</kbd> untuk menyimpan ke riwayat</span>
+              </div>
+
+              <div class="translator__panes">
+                <div class="pane">
+                  <label class="pane__label" for="inputText">Teks <span id="labelFrom">Konjo</span></label>
+                  <textarea id="inputText" rows="5" maxlength="1000" spellcheck="false" autocomplete="off" placeholder="Contoh: Apa kareba, kau macca sikali."></textarea>
+                  <div class="pane__foot">
+                    <span class="pane__count" id="charCount">0 / 1000</span>
+                    <button class="btn btn--ghost" id="clearBtn" type="button"><svg class="icon"><use href="#i-trash"/></svg>Hapus</button>
+                  </div>
+                </div>
+                <div class="pane pane--output">
+                  <span class="pane__label">Terjemahan <span id="labelTo">Indonesia</span></span>
+                  <div class="output" id="outputText" aria-live="polite"><span class="output__placeholder">Hasil terjemahan akan tampil di sini.</span></div>
+                  <div class="missing" id="missingList" hidden></div>
+                  <div class="pane__foot">
+                    <span class="legend"><i class="legend__dot legend__dot--frasa"></i>frasa <i class="legend__dot legend__dot--miss"></i>tidak ditemukan</span>
+                    <button class="btn btn--ghost" id="copyBtn" type="button" disabled><svg class="icon"><use href="#i-copy"/></svg>Salin</button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="translator__actions">
+                <div class="examples" id="examples">
+                  <span class="examples__label">Contoh:</span>
+                </div>
+                <button class="btn btn--primary" id="translateBtn" type="button">Terjemahkan<svg class="icon"><use href="#i-arrow"/></svg></button>
+              </div>
+            </div>
+
+            <div class="stats" id="stats">
+              <div class="stat"><span class="stat__value" id="sDikenali">0</span><span class="stat__label">kata dikenali</span></div>
+              <div class="stat stat--miss"><span class="stat__value" id="sTidak">0</span><span class="stat__label">tidak dikenali</span></div>
+              <div class="stat"><span class="stat__value" id="sFrasa">0</span><span class="stat__label">frasa cocok</span></div>
+              <div class="stat"><span class="stat__value" id="sCakupan">0%</span><span class="stat__label">cakupan kamus</span></div>
+              <div class="stat"><span class="stat__value" id="sWaktu">0 ms</span><span class="stat__label">waktu proses</span></div>
+            </div>
+
+            <div class="stack">
+              <section class="card" aria-labelledby="judul-rincian">
+                <h3 class="card__title" id="judul-rincian">Rincian Kata</h3>
+                <div class="table-wrap">
+                  <table class="detail">
+                    <thead><tr><th>No</th><th>Sumber</th><th>Padanan</th><th>Jenis</th><th>Kategori</th><th>Status</th></tr></thead>
+                    <tbody id="detailBody"><tr class="detail__empty"><td colspan="6">Belum ada teks yang diterjemahkan.</td></tr></tbody>
+                  </table>
+                </div>
+              </section>
+
+              <section class="card" aria-labelledby="judul-proses">
+                <h3 class="card__title" id="judul-proses">Proses Longest Match</h3>
+                <p class="card__desc">Di setiap posisi kata <code>i</code>, panjang pencocokan <code>n</code> dimulai dari n maks lalu diturunkan hingga 1.</p>
+                <ol class="trace" id="traceList"><li class="trace__empty">Langkah pencocokan akan tampil di sini.</li></ol>
+              </section>
+            </div>
+
+            <section class="card history" aria-labelledby="judul-riwayat">
+              <div class="card__head">
+                <h3 class="card__title" id="judul-riwayat"><svg class="icon"><use href="#i-clock"/></svg>Riwayat &amp; Statistik</h3>
+                <button class="btn btn--ghost" id="clearHistoryBtn" type="button"><svg class="icon"><use href="#i-trash"/></svg>Hapus riwayat</button>
+              </div>
+              <div class="usage" id="usage"></div>
+              <ul class="history__list" id="historyList"></ul>
+            </section>
+          </section>
+
+          <!-- ================= BAHASA ================= -->
+          <section class="view" id="view-bahasa" data-view="bahasa" aria-labelledby="judul-bahasa" hidden>
+            <header class="view__head">
+              <h2 class="view__title" id="judul-bahasa">Bahasa Konjo</h2>
+              <p class="view__subtitle">Bahasa daerah di Kabupaten Bulukumba, Sulawesi Selatan, dengan tiga dialek menurut Badan Bahasa: Bira, Ara, dan Kajang.</p>
+            </header>
+
+            <figure class="scene">
+              <div class="scene__sun" aria-hidden="true"></div>
+              <svg class="scene__hills" viewBox="0 0 600 160" preserveAspectRatio="none" aria-hidden="true">
+                <path class="scene__hill scene__hill--back" d="M0 160V96l70-46 64 52 88-74 92 70 70-40 92 60 60-30 64 34v38z"/>
+                <path class="scene__hill scene__hill--front" d="M0 160v-34l90-36 80 46 110-62 90 56 80-30 150 48v12z"/>
+              </svg>
+              <figcaption class="scene__content">
+                <span class="scene__chip">Dialek Bira</span>
+                <span class="scene__chip">Dialek Ara</span>
+                <span class="scene__chip scene__chip--accent">Dialek Kajang</span>
+              </figcaption>
+            </figure>
+            <p class="view__caption">Sumber: Peta Bahasa dan Laboratorium Kebinekaan Bahasa, Badan Pengembangan dan Pembinaan Bahasa.</p>
+
+            <div class="facts">
+              <article class="fact">
+                <span class="fact__kicker">Status</span>
+                <h3 class="fact__title">Bahasa tersendiri</h3>
+                <p>Hasil dialektometri Badan Bahasa menunjukkan perbedaan 81–100% dengan bahasa lain di Sulawesi Selatan, termasuk 88% dengan bahasa Makassar.</p>
+              </article>
+              <article class="fact">
+                <span class="fact__kicker">Dialek</span>
+                <h3 class="fact__title">Bira, Ara, Kajang</h3>
+                <p>Dialek Bira dan Ara dituturkan di Kecamatan Bonto Bahari, dialek Kajang di Kecamatan Kajang. Perbedaan antardialek berkisar 61–67%.</p>
+              </article>
+              <article class="fact">
+                <span class="fact__kicker">Ejaan</span>
+                <h3 class="fact__title">Apostrof = hamzah</h3>
+                <p>Apostrof menandai bunyi hamzah, seperti pada <em>kasi'</em> dan <em>le'leng</em>. Saat pencocokan, apostrof diabaikan sehingga <em>kasi'</em> dan <em>kasi</em> dianggap sama.</p>
+              </article>
+              <article class="fact">
+                <span class="fact__kicker">Budaya</span>
+                <h3 class="fact__title">Pasang ri Kajang</h3>
+                <p>Pesan leluhur yang menjadi pedoman hidup masyarakat adat Ammatoa, dengan prinsip <em>tallasa' kamase-masea</em> atau hidup sederhana.</p>
+              </article>
+            </div>
+
+            <section class="card kamus" aria-labelledby="judul-kamus">
+              <div class="card__head">
+                <div>
+                  <h3 class="card__title" id="judul-kamus"><svg class="icon"><use href="#i-book"/></svg>Kamus Konjo–Indonesia</h3>
+                  <p class="card__desc" id="kamusSummary"></p>
+                </div>
+                <label class="search">
+                  <svg class="icon"><use href="#i-search"/></svg>
+                  <span class="sr-only">Cari di kamus</span>
+                  <input type="search" id="kamusSearch" placeholder="Cari kata Konjo atau Indonesia…" autocomplete="off">
+                </label>
+              </div>
+              <div class="chips" id="kamusFilter" role="group" aria-label="Filter kategori"></div>
+              <div class="kamus__grid" id="kamusGrid"></div>
+              <p class="kamus__empty" id="kamusEmpty" hidden>Tidak ada entri yang cocok dengan pencarian.</p>
+            </section>
+          </section>
+
+          <!-- ================= LOKASI ================= -->
+          <section class="view" id="view-lokasi" data-view="lokasi" aria-labelledby="judul-lokasi" hidden>
+            <header class="view__head">
+              <h2 class="view__title" id="judul-lokasi">Lokasi Kajang</h2>
+              <p class="view__subtitle">Kecamatan Kajang, Kabupaten Bulukumba, Sulawesi Selatan — wilayah tutur bahasa Konjo dialek Kajang dan Kawasan Adat Ammatoa.</p>
+            </header>
+
+            <figure class="map-card">
+              <div class="map-card__tabs" id="mapTabs" role="group" aria-label="Pilih wilayah peta">
+                <button type="button" class="tab is-active" data-q="Kecamatan Kajang, Kabupaten Bulukumba, Sulawesi Selatan" data-z="12" data-label="Kecamatan Kajang">Kecamatan Kajang</button>
+                <button type="button" class="tab" data-q="Desa Tanah Towa, Kajang, Bulukumba, Sulawesi Selatan" data-z="14" data-label="Kawasan Adat Ammatoa (Desa Tanah Towa)">Kawasan Adat Ammatoa</button>
+                <button type="button" class="tab" data-q="Kabupaten Bulukumba, Sulawesi Selatan" data-z="10" data-label="Kabupaten Bulukumba">Kabupaten Bulukumba</button>
+              </div>
+              <div class="map-frame">
+                <p class="map-frame__fallback">Memuat peta… Peta Google Maps memerlukan koneksi internet.</p>
+                <iframe id="mapFrame" title="Peta Kecamatan Kajang, Bulukumba" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+              </div>
+              <figcaption class="map-card__foot">
+                <span><svg class="icon"><use href="#i-pin"/></svg><span id="mapLabel">Kecamatan Kajang</span></span>
+                <a id="mapLink" href="https://www.google.com/maps/search/?api=1&amp;query=Kecamatan%20Kajang%2C%20Kabupaten%20Bulukumba" target="_blank" rel="noopener">Buka di Google Maps<svg class="icon"><use href="#i-external"/></svg></a>
+              </figcaption>
+            </figure>
+            <p class="view__caption">Peta: Google Maps Embed. Data wilayah: BPS Kabupaten Bulukumba.</p>
+
+            <div class="facts facts--numbers">
+              <article class="fact"><span class="fact__kicker">Luas wilayah</span><h3 class="fact__title">130,79 km²</h3><p>Sekitar 11,1% wilayah Kabupaten Bulukumba.</p></article>
+              <article class="fact"><span class="fact__kicker">Wilayah administrasi</span><h3 class="fact__title">17 desa · 2 kelurahan</h3><p>Kelurahan Tanah Jaya dan Kelurahan Laikang.</p></article>
+              <article class="fact"><span class="fact__kicker">Penduduk</span><h3 class="fact__title">54.731 jiwa</h3><p>Menurut data BPS tahun 2025.</p></article>
+              <article class="fact"><span class="fact__kicker">Kawasan Adat Ammatoa</span><h3 class="fact__title">Desa Tanah Towa</h3><p>Sekitar 50 km dari pusat pemerintahan Kabupaten Bulukumba.</p></article>
+            </div>
+
+            <div class="grid-2 grid-2--loc">
+              <section class="card" aria-labelledby="judul-batas">
+                <h3 class="card__title" id="judul-batas">Batas Wilayah</h3>
+                <div class="compass">
+                  <span class="compass__n"><small>Utara</small>Kabupaten Sinjai</span>
+                  <span class="compass__w"><small>Barat</small>Kec. Bulukumpa</span>
+                  <span class="compass__core" aria-hidden="true"><b>Kajang</b></span>
+                  <span class="compass__e"><small>Timur</small>Teluk Bone</span>
+                  <span class="compass__s"><small>Selatan</small>Kec. Herlang</span>
+                </div>
+              </section>
+              <section class="card" aria-labelledby="judul-desa">
+                <h3 class="card__title" id="judul-desa">Desa &amp; Kelurahan</h3>
+                <p class="card__desc">Pilih nama desa untuk menampilkannya pada peta.</p>
+                <div class="chips chips--desa" id="desaList"></div>
+              </section>
+            </div>
+            <p class="source">Sumber data: BPS Kabupaten Bulukumba — <em>Kecamatan Kajang Dalam Angka 2025</em> dan <em>Kabupaten Bulukumba Dalam Angka 2026</em>.</p>
+          </section>
+        </div>
+      </div>
+    </div>
+
+    <footer class="foot">
+      <span class="logo logo--foot"><img class="logo__img" src="assets/logo.png" alt="" width="52" height="52"></span>
+      <p><strong>PASSAPU</strong> · Penerjemah Bahasa Konjo–Indonesia dengan Algoritma Longest Match · Kecamatan Kajang, Bulukumba</p>
+      <p>Dikembangkan oleh Alief Resky Awal — Program Studi Informatika · HTML5, CSS3 &amp; JavaScript</p>
+    </footer>
+  </main>
+
+  <!-- Tambahan HP/Android: bilah bawah, tombol radial berada di lekukan tengah -->
+  <nav class="m-bar" aria-label="Navigasi HP">
+    <button class="m-bar__btn" id="mMenuBtn" type="button" aria-label="Buka menu radial">
+      <svg class="icon"><use id="mBarIcon" href="#i-translate"/></svg>
+      <span class="m-bar__text"><small>Menu</small><b id="mBarLabel">Terjemah</b></span>
+    </button>
+    <span aria-hidden="true"></span>
+    <button class="m-bar__btn m-bar__btn--end" id="mHistoryBtn" type="button">
+      <svg class="icon"><use href="#i-clock"/></svg>
+      <span class="m-bar__text"><small>Lihat</small><b>Riwayat</b></span>
+    </button>
+  </nav>
+
+  <div class="scrim" id="scrim" aria-hidden="true"></div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="js/dictionary.js"></script>
+  <script src="js/longest-match.js"></script>
+  <script src="js/app.js"></script>
+  <!-- Tambahan: perilaku tampilan HP/Android -->
+  <script src="js/mobile.js"></script>
+</body>
+</html>
